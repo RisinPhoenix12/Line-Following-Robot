@@ -1,0 +1,57 @@
+ #include<AFMotor.h> //importing motor shield library
+
+
+ #define trigPin 12
+ #define echoPin 13
+
+ AF_DCMotor motor1(1,MOTOR12_) 
+ AF_DCMotor motor2(2,MOTOR12_)
+
+ void setup()
+{
+  Serial.begin(9600);
+ Serial.println("Motor Test")
+ pinMode(trigPin,OUTPUT);
+ pinMode(echoPin,INPUT);
+ motor1.setSpeed(105);
+ motor2.setSpeed(105);
+}
+
+
+
+void loop()
+{
+  long duration,distance;
+  digitalWrite(trigPin,LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin,HIGH);
+
+
+  delayMicroseconds(10);
+  digitalWrite(trigpin,LOW);
+  duration=pulseIn(echoPin,HIGH);
+  distance=(duration/2)/29.1;  //convert distance to centimeters
+  if(distance<25)
+  {  Serial.println("Close Obstacle Detected");
+  Serial.println("Obstacle details");
+  Serial.println("Distance from robot is ");
+  Serial.print(distance);
+  Serial.print("cm");
+
+  Serial.println("The obstacle is elared a threst due to close distance");
+  Serial.println("Turning");
+  motor1.run(FORWARD);
+  motor2.run(BACKWARD);
+
+}
+
+  else
+{
+ Serial.println("No obstacle");
+ delay(15);
+motor1.run(FORWARD);
+  motor2.run(FORWARD);
+}
+}
+
+
